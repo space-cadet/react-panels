@@ -24,6 +24,8 @@ export default function Panel({ title, onClose, initialPosition, children }: Pan
     setIsMinimized(!isMinimized)
   }
 
+  const panelHeight = isMinimized ? 40 : 200
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.target instanceof HTMLElement && e.target.closest(".panel-header")) {
       setIsDragging(true)
@@ -71,10 +73,10 @@ export default function Panel({ title, onClose, initialPosition, children }: Pan
       <Resizable
         defaultSize={{
           width: 300,
-          height: isMinimized ? 40 : 200,
+          height: panelHeight,
         }}
         minWidth={200}
-        minHeight={isMinimized ? 40 : 100}
+        minHeight={40}
         maxWidth={800}
         maxHeight={600}
         enable={{
@@ -100,10 +102,11 @@ export default function Panel({ title, onClose, initialPosition, children }: Pan
               </button>
             </div>
           </div>
-          {!isMinimized && <div className="p-4 flex-grow overflow-auto">{children}</div>}
+          <div className={`p-4 flex-grow overflow-auto ${isMinimized ? 'hidden' : 'block'}`}>
+            {children}
+          </div>
         </div>
       </Resizable>
     </div>
   )
 }
-
